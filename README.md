@@ -83,7 +83,7 @@ No backend: forms validate and confirm on the client only.
 Requires Node.js 18.18 or newer.
 
 ```bash
-git clone https://github.com/<your-username>/ledgerly.git
+git clone https://github.com/dev-ahsan7/ledgerly.git
 cd ledgerly
 npm install
 npm run dev
@@ -158,7 +158,7 @@ docs/                 Screenshots for this README
 
 ## Deploy
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/dev-ahsan7/ledgerly)
 
 Import the repository in Vercel. No environment variables are required.
 
