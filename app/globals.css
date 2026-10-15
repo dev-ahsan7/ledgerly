@@ -1,0 +1,184 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   DESIGN TOKENS — the only place to change the look of the site.
+   Colors are space-separated RGB channels so Tailwind can apply opacity
+   (e.g. bg-ink/10). This is a neutral placeholder theme.
+   ========================================================================== */
+:root {
+  /* Surfaces — warm "ledger paper" neutrals */
+  --color-bg: 244 243 239;
+  --color-surface: 250 250 248;
+  --color-surface-2: 236 235 230;
+  --color-line: 222 220 213;
+
+  /* Text */
+  --color-ink: 20 20 19;
+  --color-muted: 128 127 121;
+
+  /* Brand */
+  --color-accent: 20 20 19;
+  --color-accent-ink: 250 250 248;
+
+  /* Inverse (security section, featured plan) */
+  --color-inverse: 19 19 18;
+  --color-inverse-ink: 240 239 235;
+  --color-inverse-muted: 142 141 135;
+
+  /* Semantic */
+  --color-stamp: 20 20 19;
+  --color-pot-1: 20 20 19;
+  --color-pot-2: 128 127 121;
+  --color-pot-3: 196 194 186;
+  --color-success: 20 20 19;
+  --color-danger: 168 50 38;
+
+  /* Type (font files are loaded with next/font in app/layout.tsx) */
+  --font-sans: var(--font-inter-tight), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-display: var(--font-sans);
+  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --heading-weight: 450;
+
+  /* Shape — small, square-ish corners */
+  --radius-sm: 2px;
+  --radius: 4px;
+  --radius-lg: 6px;
+  --radius-xl: 8px;
+  --radius-pill: 4px;
+  --shadow-card: none;
+  --shadow-float: 0 1px 0 rgb(0 0 0 / 0.03), 0 10px 30px -18px rgb(0 0 0 / 0.18);
+
+  /* Layout */
+  --content-max: 1200px;
+  --nav-height: 72px;
+
+  /* Motion */
+  --marquee-duration: 70s;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-bg font-sans text-ink antialiased;
+    overflow-x: clip;
+  }
+  ::selection {
+    @apply bg-ink text-bg;
+  }
+  :focus-visible {
+    outline: 2px solid rgb(var(--color-ink));
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  [id] {
+    scroll-margin-top: calc(var(--nav-height) + 24px);
+  }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-content px-4 sm:px-6 lg:px-8;
+  }
+  .section-y {
+    @apply py-14 md:py-20;
+  }
+  /* Second sentence of a headline, shown in the muted tone. */
+  .title-muted {
+    @apply text-muted;
+  }
+  /* Ruled line that opens each section, like a ledger page. */
+  .ledger-rule {
+    @apply flex items-center justify-between border-t border-line pt-4;
+  }
+  .h2 {
+    @apply font-display text-[2rem] font-heading leading-[1.08] tracking-[-0.025em] md:text-[3.25rem];
+    text-wrap: balance;
+  }
+  .lead {
+    @apply text-base leading-relaxed text-muted md:text-[1.0625rem];
+    text-wrap: pretty;
+  }
+  .card {
+    @apply rounded-lg border border-line bg-surface shadow-card;
+  }
+  .chip {
+    @apply inline-flex items-center gap-2 rounded-pill border border-line bg-surface/60 px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.12em];
+  }
+  .input {
+    @apply w-full rounded border border-line bg-surface px-3 py-2.5 text-base text-ink placeholder:text-muted/70 focus:border-ink focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2;
+  }
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+  .sr-only-focusable:not(:focus) {
+    @apply sr-only;
+  }
+
+  /* Zigzag / perforated bottom edge for receipt cards. */
+  .zigzag-bottom {
+    --zz: 14px;
+    -webkit-mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / var(--zz) 100%;
+    mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / var(--zz) 100%;
+    padding-bottom: calc(var(--zz) / 2 + 1.25rem);
+  }
+
+  /* Dotted leader line used in receipt rows. */
+  .leader {
+    @apply mx-2 min-w-[1.5rem] flex-1 translate-y-[-0.3em] border-b-2 border-dotted border-line;
+  }
+
+  .marquee-mask {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  }
+
+  .reduced-only {
+    display: none;
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Used inline by the feature-tab progress bar (auto-advance timer). */
+@keyframes progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* ==========================================================================
+   Reduced motion: show the final state of every animation, no movement.
+   Elements animated with Framer Motion carry [data-reveal].
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .animate-marquee {
+    animation: none !important;
+  }
+  /* Logo row: swap the moving marquee for a static grid. */
+  .motion-only {
+    display: none !important;
+  }
+  .reduced-only {
+    display: grid !important;
+  }
+}
